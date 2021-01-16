@@ -42,3 +42,8 @@ def makeEdits(request, show):
     updateShow.description = request.POST['description']
     updateShow.save()
     return redirect(f'/viewShow/{ updateShow.id }')
+
+def deleteShow(request, show):
+    removeShow = TV_Show.objects.get(id=show)
+    removeShow.delete()
+    return redirect('/')
