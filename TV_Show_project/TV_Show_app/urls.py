@@ -7,6 +7,6 @@ urlpatterns = [
     path('createTV', views.createTV),
     path('viewShow/<int:newShow>', views.viewShow),
     path('editShow/<int:show>', views.editShow),
-    path('makeEdits', views.makeEdits),
+    path('makeEdits/<int:show>', views.makeEdits),
     path('deleteShow/<int:show>', views.deleteShow)
 ]

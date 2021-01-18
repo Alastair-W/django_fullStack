@@ -7,7 +7,8 @@
 <meta name="Description" content="Enter your description here"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<link rel="stylesheet" href="assets/css/style.css">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 <title>TV Shows</title>
 
 
@@ -40,6 +41,17 @@
             <h1>Add a New Show</h1>
         </div>
     </div>
+    {% if messages %}
+    <div class="row bg-warning">
+        <div class="col pt-2">
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
     <div class="row">
         <div class="col">
             <form action='createTV' method='POST'>
@@ -58,7 +70,7 @@
                 </div>
                 <div class="form-group">
                     <label for="description">DESCRIPTION:</label>
-                    <textarea class="form-control" name="description" id="description" rows="5" placeholder=""></textarea>
+                    <textarea class="form-control" name="description" id="description" rows="5" placeholder="Optional"></textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Create</button>

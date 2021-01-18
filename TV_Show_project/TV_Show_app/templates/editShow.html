@@ -40,9 +40,20 @@
             <h1>Edit TV Show: <span style="color: blue">{{ show.title }}</span></h1>
         </div>
     </div>
+    {% if messages %}
+    <div class="row bg-warning">
+        <div class="col pt-2">
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
     <div class="row">
         <div class="col">
-            <form action='makeEdits' method='POST'>
+            <form action='/makeEdits/{{ show.id }}' method='POST'>
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="title">TITLE:</label>
@@ -61,7 +72,7 @@
                     <textarea class="form-control" name="description" id="description" rows="5" >{{ show.description }}</textarea>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </form>

@@ -37,6 +37,15 @@
 </nav>
     
 <div class="container-fluid">
+    <div class="row bg-warning">
+        <div class="col pt-2">
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             <table class="table">
