@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<title>Book Club</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <a class="navbar-brand" href="/">Book Club</a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Sign Up/Log In</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownId">
+                    <a class="dropdown-item" href="#">Action 1</a>
+                    <a class="dropdown-item" href="#">Action 2</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row justify-content-around">
+        <div class="col-auto">
+            <h2>Register</h2>
+            <form action="/registerUser" method="POST">
+            {% csrf_token %}
+                <div class="form-group row">
+                    <label for="first_name" class="col-sm-1-12 col-form-label">First Name</label>
+                    <input type="text" class="form-control" name="first_name" id="first_name" placeholder="">
+                </div>
+                <div class="form-group row">
+                    <label for="last_name" class="col-sm-1-12 col-form-label">Last Name</label>
+                    <input type="text" class="form-control" name="last_name" id="last_name" placeholder="">
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-sm-1-12 col-form-label">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="">
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-1-12 col-form-label">Password</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="">
+                </div>
+                <div class="form-group row">
+                    <label for="confirm" class="col-sm-1-12 col-form-label">Confirm Password</label>
+                    <input type="password" class="form-control" name="confirm" id="confirm" placeholder="">
+                </div>
+                <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-auto">
+            <h2>Log In</h2>
+            <form action="/login" method="POST">
+            {% csrf_token %}
+                <div class="form-group row">
+                    <label for="email" class="col-sm-1-12 col-form-label">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="">
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-1-12 col-form-label">Password</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="">
+                </div>
+                <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+</html>

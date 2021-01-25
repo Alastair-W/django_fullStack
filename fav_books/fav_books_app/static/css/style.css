@@ -1,0 +1,20 @@
+#carouselMain{
+    overflow: hidden;
+}
+
+#subhead{
+    font-weight: bold;
+}
+
+#smallSubhead{
+    font-weight: bold;
+    font-size: 0.80rem;
+}
+
+#content{
+    font-size: 1.10rem;
+}
+
+#smallContent{
+    font-size: 0.80rem;
+}
