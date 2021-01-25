@@ -97,3 +97,8 @@ def createComment(request, message):
             user = userObj
         )
     return redirect('/success')
+
+def deletePost(request, msgID):
+    item = Message.objects.get(id=msgID)
+    item.delete()
+    return redirect ('/success')

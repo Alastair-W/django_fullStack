@@ -10,5 +10,6 @@ urlpatterns = [
     path('profile', views.profile),
     path('loggedIn', views.loggedIn),
     path('postMessage', views.createMessage),
-    path('postComment/<int:message>', views.createComment)
+    path('postComment/<int:message>', views.createComment),
+    path('deletePost/<int:msgID>', views.deletePost)
 ]
