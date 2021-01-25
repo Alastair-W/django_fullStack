@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<title>Wall</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <a class="navbar-brand" href="#">Post.ly</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href='/'>Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout">Log Out</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav text-right">
+                {% for message in messages %}
+                <li>{{ message.success }}
+                    <span {% if message.tags %} class="{{ message.tags }}"{% endif %}><a href="/logout">Log Out</a></span>
+                </li>
+                {% endfor %}
+                
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row bg-warning">
+            <div class="col">
+                <h1>The Wall</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="postMessage" method='POST'>
+                {% csrf_token %}
+                    <div class="form-group">
+                        <label for="message">Post a Message</label>
+                        <textarea class="form-control" name="message" id="message" rows="3" maxlength="255" placeholder="Maximum number of characters is 255"></textarea>
+                    </div>
+                    <div class="form-group text-right">
+                        <button class="btn btn-primary">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% for item in allM %}
+        <div class="row">
+            <div class="col">
+                <h5>{{ item.user.first_name }} {{ item.user.last_name }} - {{ item.created_at }}</h5>
+                <p class="bg-light">{{ item.message }}</p>
+            </div>
+        </div>
+            {% for comment in item.comment.all %}
+            <div class="row ml-2">
+                <div class="col">
+                    <h5>{{ comment.user.first_name }} {{ comment.user.last_name }} - {{ comment.created_at }}</h5>
+                    <p class="border-bottom">{{ comment.comment }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        <div class="row">
+            <div class="col">
+                <form action="postComment/{{ item.id }}" method='POST'>
+                {% csrf_token %}
+                    <div class="form-group">
+                        <label for="message">Post a Comment</label>
+                        <textarea class="form-control" name="comment" id="comment" rows="2" maxlength="255" placeholder="Maximum number of characters is 255"></textarea>
+                    </div>
+                    <div class="form-group text-right">
+                        <button class="btn btn-info">Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+</body>
+</html>

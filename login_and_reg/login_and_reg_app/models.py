@@ -34,6 +34,18 @@ class Validate(models.Manager):
                 errors['password'] = 'Invalid email/password'
         return errors  
 
+    def messageVal(self, form):
+        errors = {}
+        if len(form['message']) < 1:
+            errors['message'] = "Message field is empty!"
+        return errors
+
+    def commentVal(self, form):
+        errors={}
+        if len(form['comment']) < 1:
+            errors['comment'] = "Comment field is empty"
+        return errors
+
 
 class User(models.Model):
     first_name = models.CharField(max_length=50)
@@ -49,3 +61,18 @@ class Session(models.Model):
     user = models.ForeignKey(User, related_name="session", on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class Message(models.Model):
+    message = models.CharField(max_length=255)
+    user = models.ForeignKey(User, related_name="message", on_delete = models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = Validate()
+
+class Comment(models.Model):
+    comment = models.CharField(max_length=255)
+    message = models.ForeignKey(Message, related_name="comment", on_delete = models.CASCADE)
+    user = models.ForeignKey(User, related_name="comment", on_delete = models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = Validate()

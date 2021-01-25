@@ -7,22 +7,23 @@
 <meta name="Description" content="Enter your description here"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-<link rel="stylesheet" href="assets/css/style.css">
+{% load static %}
+<link rel="stylesheet" href="text/css" href="{% static 'css/style.css' %}">
 <title>Log In and Registration</title>
 </head>
 <body>
     <div class="container-fluid">
         {% if messages %}
-                <div class="row bg-warning">
-                    <div class="col p-2">
-                        <ul class="messages">
-                            {% for message in messages %}
-                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                {% endif %}
+        <div class="row bg-warning">
+            <div class="col p-2">
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
         <div class="row justify-content-around">
             <div class="col-auto">
                 <h1>Registration</h1>
@@ -58,6 +59,7 @@
                 </div>
             </div>
             <div class="col-auto">
+                {% if 'user_id' not in request.session %}
                 <h1>Log-In</h1>
                 <div class="row">
                     <form action="checkLogin" method='POST'>
@@ -76,15 +78,41 @@
                             </div>
                         </div>
                     </form>
+                </div>
+                {% else %}
+                <h1>Profile</h1>
+                <div class="row">
+                    <div class="col-auto mt-3">
+                        <form action="loggedIn" method=POST>
+                        {% csrf_token %}
+                            <button class="btn btn-primary sessionCheck">Profile</button>
+                        </form>
+                    </div>
+                    <div class="col-auto mt-3">
+                        <form action="logout">
+                        {% csrf_token %}
+                            <button class="btn btn-warning sessionCheck">Log Out</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
-        <div class="row">
-            
+        <div class="row bg-light">
+            {% if 'user_id' not in request.session %}
+                <div class="col">
+                    <h5>No Session</h5>
+                </div>
+            {% else %}
+                <div class="col">
+                    <h5>User ID #{{ request.session.user_id }} currently logged in</h5>
+                </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <a href="logout">Log Out</a>
+                </div>
+            {% endif %}
         </div>
-        
-
-
-
     </div>
 
 
