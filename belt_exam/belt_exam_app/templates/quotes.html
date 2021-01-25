@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<title>Quotes Home Page</title>
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-light bg-light">
+    <div class="nav navbar-nav justify-content-between">
+            <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+            {% if request.session.user_id %}
+            <a class="nav-item nav-link" href="/quotes">Quotes</a>
+            <a class="nav-item nav-link" href="/logout">Log Out</a>
+            <a class="nav-item nav-link" href="/editProfile">Edit Profile</a>
+            {% endif %}
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h1>Welcome {{ user.first_name }} {{ user.last_name }}</h1>
+        </div>
+    </div>
+    <div class="row justify-content-around p-5">
+        <div class="col-7">
+            <h4>List of Quotes</h4>
+            {% for item in q %}
+            <div class="bg-light pt-3 px-2 border mt-4">
+                <span id="subhead">{{ item.author }}</span>: "<span id="quote">{{ item.quote }}</span>"
+                <p>Posted by <a href='/userPage/{{ item.added_by.id }}'>{{ item.added_by.first_name }} {{ item.added_by.last_name }}</a></p>
+                <p><a href="/likeQuote/{{ item.id }}">Like</a> ({{ item.liked_by.count }} likes)</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col">
+            <h4>Add a Quote</h4>
+            <form action="/addQuote" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input type="text" name="author" id="author" class="form-control" placeholder="" aria-describedby="helpId">
+                </div>
+                <div class="form-group">
+                    <label for="quote">Quote</label>
+                    <textarea class="form-control" name="quote" id="quote" rows="3"></textarea>
+
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+</html>
