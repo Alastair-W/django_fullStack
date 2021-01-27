@@ -41,48 +41,51 @@
 </nav>
 
 <div class="container-fluid">
-    <div class="row justify-content-around">
-        <div class="col m-2">
-            <h2>Hi {{ this_user.first_name }}, add a favorite book!</h2>
-            <form action="/addBook" method="POST">
-            {% csrf_token %}
-                <div class="form-group row">
-                    <label for="title" class="col-sm-1-12 col-form-label">Title</label>
-                    <input type="text" class="form-control" name="title" id="title" placeholder="">
-                </div>
-                <div class="form-group row">
-                    <label for="description" class="col-sm-1-12 col-form-label">Description</label>
-                    <textarea class="form-control" name="description" id="description" rows="7"></textarea>
-                </div>
-                <div class="form-group row">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary">Add Book</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <div class="row">
         <div class="col m-2">
             <h2>Book List</h2>
-            {% for book in allBooks %}
                 <div class="bg-light mt-2 p-1">
                     <span id="subhead">Title:</span>
-                    <span id="content"><a href="/bookPage/{{ book.id }}">{{ book.title }}</a></span>
+                    <span id="content">{{ this_book.title }}</span>
                 </div>
                 <div class="bg-light p-1">
                     <span id="subhead">Description:</span>
-                    <span id="content">{{ book.desc }}</span>
+                    <span id="content">{{ this_book.desc }}</span>
                 </div>
                 <div class="bg-light p-1">
                     <span id="smallSubhead">Added By:</span>
-                    <span id="smallContent">{{ book.from_user.first_name }} {{ book.from_user.last_name }}</span>
+                    <span id="smallContent">{{ this_book.from_user.first_name }} {{ this_book.from_user.last_name }}</span>
                 </div>
-                {% if this_user in book.liked_by.all %}
                 <div class="bg-warning border-bottom p-1 pb-2">
-                    <span id="smallSubhead">Favorited</span>
+                    <span id="smallSubhead">Favorited By:</span>
+                    {% for item in this_book.liked_by.all %}
+                    <li><span id="smallSubhead">{{ item.first_name}} {{ item.last_name }}</span></li>
+                    {% empty %}
+                    <li><span id="smallSubhead">None of our users has favorited this book yet!</span></li>
+                    {% endfor %}
                 </div>
-                {% endif %}
-            {% endfor %}
         </div>
+    </div>
+    <div class="row justify-content-start">
+        <div class="col-2">
+            <form action="/favorite/{{ this_book.id }}" method='POST'>
+            {% csrf_token %}
+                <button class="btn btn-primary m-2">
+                {% if this_user in this_book.liked_by.all %}
+                    Remove from Favorites
+                {% else %}
+                    Add as Favorite
+                {% endif %}
+                </button>
+            </form>
+        </div>
+        {% if this_user == this_book.from_user %}
+        <div class="col-2">
+            <form action="/editPage/{{ this_book.id }}" method='GET'>
+                <button class="btn btn-secondary m-2">Edit Book</button>
+            </form>
+        </div>
+        {% endif %}
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>

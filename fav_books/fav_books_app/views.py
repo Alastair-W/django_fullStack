@@ -14,19 +14,31 @@ def registerPage(request):
 
 def success(request):
     if request.session['user_id']:
-        allBooks = Book.objects.all()
+        allBooks = reversed(Book.objects.all())
         context = {
-            "allBooks": allBooks
+            "allBooks": allBooks,
+            "this_user": User.objects.get(id=request.session['user_id'])
         }
         return render(request, 'profile.html', context)
     else:
         return redirect('/')
 
 def logout(request):
-    userID = request.session['user_id']
-    myUser = User.objects.get(id=userID)
-    request.session.clear()
+    request.session.flush()
     return redirect('/')
+
+def bookPage(request, bookID):
+    context = {
+        'this_book': Book.objects.get(id=bookID),
+        'this_user': User.objects.get(id=request.session['user_id'])
+    }
+    return render(request, 'bookPage.html', context)
+
+def editPage(request, bookID):
+    context = {
+        'edit_book': Book.objects.get(id=bookID)
+    }
+    return render(request, 'editBook.html', context)
 
 #POST
 
@@ -71,9 +83,34 @@ def addBook(request):
             messages.error(request.errors[error])
         return redirect('/success')
     curr_user = User.objects.get(id=request.session['user_id'])
-    Book.objects.create(
+    book = Book.objects.create(
         title = request.POST['title'],
         desc = request.POST['description'],
         from_user = curr_user
     )
+    curr_user.liked_book.add(book)
     return redirect('/verifiedUser')
+
+def favorite(request, bookID):
+    curr_user = User.objects.get(id=request.session['user_id'])
+    curr_book = Book.objects.get(id=bookID)
+    if curr_user in curr_book.liked_by.all():
+        curr_user.liked_book.remove(curr_book)
+    else:
+        curr_user.liked_book.add(curr_book)
+    return redirect(f'/bookPage/{ bookID }')
+
+def editBook(request, bookID):
+    if request.method == 'GET':
+        return redirect('/')
+    errors = User.objects.bookVal(request.POST)
+    if errors:
+        for error in errors:
+            messages.error(request.errors[error])
+        return redirect('/success')
+    book = Book.objects.get(id=bookID)
+    book.title = request.POST['title']
+    book.desc = request.POST['description']
+    book.save()
+    return redirect(f'/editPage/{ bookID }')
+
